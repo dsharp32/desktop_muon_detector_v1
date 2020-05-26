@@ -7,6 +7,11 @@ import signal
 #import json
 from datetime import datetime
 from multiprocessing import Process
+
+now = datetime.now()
+now = str(now)
+
+
 def signal_handler(signal, frame):
         print('You pressed Ctrl+C!')
         ComPort.close()     
@@ -52,7 +57,7 @@ if len(port_list) > 1:
     for i in range(len(port_list)):
         print('['+str(i+1)+'] ' + str(port_list[i]))
     print('[h] help\n')
-    ArduinoPort = raw_input("Select Arduino Port:")
+    ArduinoPort = input("Select Arduino Port:")
     if ArduinoPort == 'h':
         print('\n===================== help =======================')
         print('1. Is your Arduino connected to the serial USB port?\n')
@@ -65,8 +70,8 @@ else :
     ArduinoPort = 1
 print("The selected port is:")
 print(str(port_list[int(ArduinoPort)-1])+'\n')
-fname = raw_input("Enter file name (eg. save_file.txt):")
-id = raw_input("Enter device ID:")
+fname = input("Enter file name (eg. save_file.txt):")
+id = input("Enter device ID:")
 print("Taking data ...")
 print("Press ctl+c to terminate process")
 
@@ -79,11 +84,12 @@ ComPort.bytesize = 8             # Number of data bits = 8
 ComPort.parity   = 'N'           # No parity
 ComPort.stopbits = 1    
 
-file = open(fname, "w",0)
+file = open(fname, "w")
 
 counter = 0
 while True:
-    data = ComPort.readline()    # Wait and read data 
+    data = ComPort.readline() 
+    muon_data = data.decode()
     if counter == 0:
         file.write("######################################################################\n")
         file.write("### Desktop Muon Detector \n")
@@ -91,7 +97,8 @@ while True:
         file.write("### Comp_time Counts Ardn_time[ms] Amplitude[mV] SiPM[mV] Deadtime[ms]\n")
         file.write("### Device ID: "+str(id)+"\n")
         file.write("######################################################################\n")
-    file.write(str(datetime.now())+" "+data)
+    
+    file.write(now + " " + muon_data)
     counter +=1
     
 ComPort.close()     

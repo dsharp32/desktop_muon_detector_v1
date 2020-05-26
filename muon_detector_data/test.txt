@@ -1,0 +1,6 @@
+###################################################################################
+### CosmicWatch: The Desktop Muon Detector 
+### Questions? saxani@mit.edu 
+### Device ID: 1A86
+### Comp_date Comp_time Event Ardn_time[ms] ADC_value[0-1023] SiPM[mV] Deadtime[ms]
+###################################################################################
